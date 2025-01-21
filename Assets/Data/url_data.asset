@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88a8f77171624290b21a448d563a4b16, type: 3}
   m_Name: url_data
   m_EditorClassIdentifier: 
-  <Settings>k__BackingField: https://github.com/dxoraxs/my-way-test-project/blob/main/remote-files/Settings.json
-  <Texts>k__BackingField: https://github.com/dxoraxs/my-way-test-project/blob/main/remote-files/Texts.json
-  <Sprite>k__BackingField: https://github.com/dxoraxs/my-way-test-project/blob/main/remote-files/sprites
+  <Settings>k__BackingField: https://raw.githubusercontent.com/dxoraxs/my-way-test-project/refs/heads/main/remote-files/Settings.json
+  <Texts>k__BackingField: https://raw.githubusercontent.com/dxoraxs/my-way-test-project/refs/heads/main/remote-files/Texts.json
+  <Sprite>k__BackingField: https://github.com/dxoraxs/my-way-test-project/raw/refs/heads/main/remote-files/sprites
