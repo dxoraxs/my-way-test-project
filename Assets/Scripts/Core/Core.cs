@@ -18,6 +18,8 @@ public class Core : MonoBehaviour
     private TextsConfig _textsConfig;
     private Sprite _buttonBackgroundSprite;
 
+    private int _clickCounter;
+
     private void Start()
     {
         _jsonLoader = new JsonLoader(_urlFilesData.Settings, _urlFilesData.Texts);
@@ -38,15 +40,16 @@ public class Core : MonoBehaviour
         
         var settingsJson = await _jsonLoader.LoadSettings();
         _settingsConfig = LoadFilesConvertHelper.ConvertJsonToObject<SettingsConfig>(settingsJson);
+        _clickCounter = SaveDataController.LoadCounter(_settingsConfig.startingNumber);
         _loadScreenContainer.UpdateValue(1/3f);
         
-        await UniTask.Delay(1000);
+        await UniTask.Delay(500);
 
         var textsJson = await _jsonLoader.LoadTexts();
         _textsConfig = LoadFilesConvertHelper.ConvertJsonToObject<TextsConfig>(textsJson);
         _loadScreenContainer.UpdateValue(2/3f);
         
-        await UniTask.Delay(1000);
+        await UniTask.Delay(500);
 
         _assetBundleLoader.ReleaseLoadedAsset();
         var spriteAssetBundle = await _assetBundleLoader.LoadSpriteAsset();
@@ -62,7 +65,31 @@ public class Core : MonoBehaviour
     {
         _gameScreenContainer.ShowScreen();
         _gameScreenContainer.SetWelcomeText(_textsConfig.welcomeMessage);
-        _gameScreenContainer.UpdateCounterText(_settingsConfig.startingNumber);
+        _gameScreenContainer.UpdateCounterText(_clickCounter);
         _gameScreenContainer.SetButtonBackgroundSprite(_buttonBackgroundSprite);
+
+        _gameScreenContainer.OnClickIncrement += IncrementCounter;
+        _gameScreenContainer.OnClickRefresh += RefreshData;
+    }
+
+    private void RefreshData()
+    {
+        _gameScreenContainer.HideScreen();
+        _gameScreenContainer.OnClickIncrement -= IncrementCounter;
+        _gameScreenContainer.OnClickRefresh -= RefreshData;
+        
+        SaveDataController.DeleteCounter();
+        InitializeGame();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveDataController.SaveCounter(_clickCounter);
+    }
+
+    private void IncrementCounter()
+    {
+        _clickCounter++;
+        _gameScreenContainer.UpdateCounterText(_clickCounter);
     }
 }
