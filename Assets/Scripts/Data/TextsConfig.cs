@@ -5,6 +5,6 @@ namespace MWTP.Data
     [Serializable]
     public class TextsConfig
     {
-        public string WelcomeMessage;
+        public string welcomeMessage;
     }
 }
