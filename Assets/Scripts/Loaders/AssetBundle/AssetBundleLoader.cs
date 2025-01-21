@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using MWTP.Data;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,18 +9,28 @@ namespace MWTP.Loaders
     public class AssetBundleLoader : IAssetBundleLoader
     {
         private readonly string _spriteUrl;
+        private readonly List<AssetBundle> _loadedBundles = new();
 
-        public AssetBundleLoader(UrlFilesData urlData)
+        public AssetBundleLoader(string urlData)
         {
-            _spriteUrl = urlData.Sprite;
+            _spriteUrl = urlData;
         }
 
         public async UniTask<AssetBundle> LoadSpriteAsset()
         {
             return await LoadAssetBundle(_spriteUrl);
         }
-        
-        private static async UniTask<AssetBundle> LoadAssetBundle(string url)
+
+        public void ReleaseLoadedAsset()
+        {
+            foreach (var loadedBundle in _loadedBundles)
+            {
+                loadedBundle.Unload(true);
+            }
+            _loadedBundles.Clear();
+        }
+
+        private async UniTask<AssetBundle> LoadAssetBundle(string url)
         {
             using var request = UnityWebRequestAssetBundle.GetAssetBundle(url);
 
@@ -27,7 +38,9 @@ namespace MWTP.Loaders
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                return DownloadHandlerAssetBundle.GetContent(request);
+                var loadAssetBundle = DownloadHandlerAssetBundle.GetContent(request);
+                _loadedBundles.Add(loadAssetBundle);
+                return loadAssetBundle;
             }
 
             throw new System.Exception($"Failed to load Asset Bundle: {request.error}");

@@ -4,12 +4,14 @@ namespace Loader
 {
     public static class LoadFilesConvertHelper
     {
+        private const string BUTTON_BACKGROUND_SPRITE_NAME = "spanch_bob";
+        
         public static T ConvertJsonToObject<T>(string json)
         {
             return JsonUtility.FromJson<T>(json);
         }
         
-        public static Sprite GetSpriteFromAssetBundle(this AssetBundle loadedAssetBundle, string assetName)
+        public static Sprite GetSpriteFromAssetBundle(this AssetBundle loadedAssetBundle)
         {
             if (loadedAssetBundle == null)
             {
@@ -17,10 +19,10 @@ namespace Loader
                 return null;
             }
             
-            var texture = loadedAssetBundle.LoadAsset<Texture2D>(assetName);
+            var texture = loadedAssetBundle.LoadAsset<Texture2D>(BUTTON_BACKGROUND_SPRITE_NAME);
             if (texture == null)
             {
-                Debug.LogError($"Texture2D '{assetName}' not found in AssetBundle!");
+                Debug.LogError($"Texture2D '{BUTTON_BACKGROUND_SPRITE_NAME}' not found in AssetBundle!");
                 return null;
             }
 

@@ -9,10 +9,10 @@ namespace MWTP.Loaders
         private readonly string _settingsUrl;
         private readonly string _textsUrl;
 
-        public JsonLoader(UrlFilesData urlData)
+        public JsonLoader(string settingsUrl, string textsUrl)
         {
-            _settingsUrl = urlData.Settings;
-            _textsUrl = urlData.Texts;
+            _settingsUrl = settingsUrl;
+            _textsUrl = textsUrl;
         }
 
         public async UniTask<string> LoadSettings()

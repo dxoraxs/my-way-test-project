@@ -6,5 +6,6 @@ namespace MWTP.Loaders
     public interface IAssetBundleLoader
     {
         UniTask<AssetBundle> LoadSpriteAsset();
+        void ReleaseLoadedAsset();
     }
 }
