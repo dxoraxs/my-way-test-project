@@ -2,26 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks.Triggers;
 using MWTP.UI;
+using MWTP.UI.Screens;
 using UnityEngine;
 
-public class LoadScreenContainer : MonoBehaviour
+public class LoadScreenContainer : BaseScreen
 {
-    [SerializeField] private CanvasGroupBehaviour _canvasGroup;
     [SerializeField] private ProgressBar _progressBar;
 
-    public void StartLoad()
+    public override void ShowScreen()
     {
-        _canvasGroup.SetActive(true);
+        base.ShowScreen();
         _progressBar.SetValue(0);
     }
 
     public void UpdateValue(float value)
     {
         _progressBar.SetValue(value);
-    }
-
-    public void StopLoad()
-    {
-        _canvasGroup.SetActive(false);
     }
 }
